@@ -1,7 +1,15 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import NsSpinner from '../components/ui-elements/loading-spinner/Spinner'
 import styles from '../styles/Home.module.scss'
+
+const inliune = {
+  color: 'var(--brand)'
+};
+
+const text = {
+  color: 'var(--text1)',
+  backgroundColor: 'var(--surface1)',
+};
 
 const Home: NextPage = () => {
   return (
@@ -13,7 +21,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <NsSpinner sizeInPx={55}></NsSpinner>
+        <p style={inliune}>This is brand color</p>
+        <p style={text}>This is text 1 and background 1</p>
       </main>
 
       <footer className={styles.footer}>
