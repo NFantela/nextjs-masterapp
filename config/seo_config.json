@@ -1,0 +1,25 @@
+{
+    "title": "Demo Nextjs app",
+    "titleTemplate": "%s - Page",
+    "description": "My app built with nextjs",
+    "openGraph": {
+        "title": "Demo Nextjs app",
+        "description": "My app built with nextjs",
+        "type": "website",
+        "url": "",
+        "site_name": "Next.js demo",
+        "images": [
+            {
+                "url": "/card.png",
+                "width": "800",
+                "height": "600",
+                "alt": "Next.js demo"
+            }
+        ]
+    },
+    "twitter": {
+        "handle": "@nextjs",
+        "site": "@nextjs",
+        "cardType": "summary_large_image"
+    }
+}

@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import Layout from '../components/common/layout/Layout';
 import styles from '../styles/Home.module.scss'
 
 const inliune = {
@@ -11,7 +12,7 @@ const text = {
   backgroundColor: 'var(--surface1)',
 };
 
-const Home: NextPage = () => {
+const Home = () => {
   return (
     <div className={styles.container}>
       <Head>
@@ -31,4 +32,6 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+Home.Layout = Layout;
+
+export default Home;

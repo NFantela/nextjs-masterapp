@@ -82,6 +82,7 @@ export const CommerceProvider = getCommerceProvider(localProvider)
 
 //----------------------------------------------------------------------------------------
 //  Layout component
+// <Layout pageProps={pageProps}> is used in _app.tsx and each page using it registerss
 //----------------------------------------------------------------------------------------
 interface PageProps {
     pageProps: {
@@ -98,9 +99,9 @@ const Layout: FC<PageProps> = ({
     return (
         <CommerceProvider locale={locale}>
             <div>
-                <nav>Navbar el here</nav>
-                <main className="fit">{children}</main>
-                <footer>footer component will be here</footer>
+                <nav>Navbar el here tod</nav>
+                <main>{children}</main>
+                <footer>footer component will be here todo</footer>
             </div>
         </CommerceProvider>
     );
