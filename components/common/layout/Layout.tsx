@@ -83,7 +83,7 @@ export const CommerceProvider = getCommerceProvider(localProvider)
 /**
  * DYNAMIC components
  */
-
+// this loading component is displayed while lazy loaded route is being fetched from server
 const dynamicProps = {
     loading: () => <div>Loading....</div>,
 }
@@ -112,7 +112,9 @@ const ModalView: FC<{ modalView: string; closeModal(): any }> = ({
     closeModal,
 }) => {
     return (
-        <Dialog.Root open={true} onOpenChange={(isOpen) => !isOpen && closeModal()}>
+        <Dialog.Root
+            open={true}
+            onOpenChange={(isOpen) => !isOpen && closeModal()}>
             <Dialog.Portal>
                 <Dialog.Overlay />
                 <Dialog.Content>
