@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
 import { FC, MutableRefObject, ReactNode, useMemo, useRef } from 'react';
 import { Category } from '../../../types/category';
-import React, { createContext, useReducer } from "react";
-import { isWeakNeverCheck } from '../../../shared/never-exhaustive-checks';
-
+import React, { createContext } from "react";
+import dynamic from 'next/dynamic';
+import { useUI } from '../../ui-context/UIContext';
+import * as Dialog from '@radix-ui/react-dialog';
 //----------------------------------------------------------------------------------------
 // LAYOUT CONTEXT
 //----------------------------------------------------------------------------------------
@@ -79,6 +80,48 @@ export type LocalProvider = typeof localProvider
 export const CommerceProvider = getCommerceProvider(localProvider)
 
 
+/**
+ * DYNAMIC components
+ */
+
+const dynamicProps = {
+    loading: () => <div>Loading....</div>,
+}
+
+const SignUpView = dynamic(
+    () => import('../../auth/SignIn/SignIn'),
+    {
+        ...dynamicProps
+    }
+);
+/**
+ *  GLobal modal section
+ *  Note this is only used to create modal views that are global (accessed from everywhere e.g. login)
+ */
+
+const ModalUI: FC = () => {
+    // grab which global modal from ui state
+    const { displayModal, closeModal, modalView } = useUI();
+    return displayModal ? (
+        <ModalView modalView={modalView} closeModal={closeModal} />
+    ) : null
+}
+
+const ModalView: FC<{ modalView: string; closeModal(): any }> = ({
+    modalView,
+    closeModal,
+}) => {
+    return (
+        <Dialog.Root open={true} onOpenChange={(isOpen) => !isOpen && closeModal()}>
+            <Dialog.Portal>
+                <Dialog.Overlay />
+                <Dialog.Content>
+                    {modalView === 'LOGIN_VIEW' && <SignUpView />}
+                </Dialog.Content>
+            </Dialog.Portal>
+        </Dialog.Root>
+    );
+}
 
 //----------------------------------------------------------------------------------------
 //  Layout component
@@ -101,6 +144,8 @@ const Layout: FC<PageProps> = ({
             <div>
                 <nav>Navbar el here tod</nav>
                 <main>{children}</main>
+                {/** modal opening component depends on ui state to show / hide modal  */}
+                <ModalUI />
                 <footer>footer component will be here todo</footer>
             </div>
         </CommerceProvider>
