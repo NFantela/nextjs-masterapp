@@ -13,6 +13,7 @@ const text = {
 
 const Home = () => {
   const { openModal } = useUI();
+  // todo make call for app links
   return (
     <div className={styles.container}>
       <section className={styles.main}>
