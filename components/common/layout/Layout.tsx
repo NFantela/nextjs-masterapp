@@ -4,7 +4,10 @@ import { Category } from '../../../types/category';
 import React, { createContext } from "react";
 import dynamic from 'next/dynamic';
 import { useUI } from '../../ui-context/UIContext';
-import * as Dialog from '@radix-ui/react-dialog';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { keyframes, styled } from '@stitches/react';
+import Navbar from '../Navbar/Navbar';
+
 //----------------------------------------------------------------------------------------
 // LAYOUT CONTEXT
 //----------------------------------------------------------------------------------------
@@ -74,7 +77,7 @@ export const localProvider = {
     // customer: { useCustomer },
     // products: { useSearch },
     // auth: { useLogin, useLogout, useSignup },
-}
+};
 
 export type LocalProvider = typeof localProvider
 export const CommerceProvider = getCommerceProvider(localProvider)
@@ -87,7 +90,6 @@ export const CommerceProvider = getCommerceProvider(localProvider)
 const dynamicProps = {
     loading: () => <div>Loading....</div>,
 }
-
 const SignUpView = dynamic(
     () => import('../../auth/SignIn/SignIn'),
     {
@@ -95,10 +97,48 @@ const SignUpView = dynamic(
     }
 );
 /**
+ *  Global radix dialog css setup
+ */
+const overlayShow = keyframes({
+    '0%': { opacity: 0 },
+    '100%': { opacity: 1 },
+});
+
+const contentShow = keyframes({
+    '0%': { opacity: 0, transform: 'translate(-50%, -48%) scale(.96)' },
+    '100%': { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
+});
+
+const StyledOverlay = styled(DialogPrimitive.Overlay, {
+    backgroundColor: 'rgb(5 5 5 / 70%)',
+    position: 'fixed',
+    inset: 0,
+    '@media (prefers-reduced-motion: no-preference)': {
+        animation: `${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards`,
+    },
+});
+
+const StyledContent = styled(DialogPrimitive.Content, {
+    backgroundColor: 'var(--surface1)',
+    borderRadius: 6,
+    boxShadow: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '90vw',
+    maxWidth: '450px',
+    maxHeight: '85vh',
+    padding: 25,
+    '@media (prefers-reduced-motion: no-preference)': {
+        animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards`,
+    },
+    '&:focus': { outline: 'none' },
+});
+/**
  *  GLobal modal section
  *  Note this is only used to create modal views that are global (accessed from everywhere e.g. login)
  */
-
 const ModalUI: FC = () => {
     // grab which global modal from ui state
     const { displayModal, closeModal, modalView } = useUI();
@@ -112,16 +152,14 @@ const ModalView: FC<{ modalView: string; closeModal(): any }> = ({
     closeModal,
 }) => {
     return (
-        <Dialog.Root
-            open={true}
-            onOpenChange={(isOpen) => !isOpen && closeModal()}>
-            <Dialog.Portal>
-                <Dialog.Overlay />
-                <Dialog.Content>
+        <DialogPrimitive.Root open={true} onOpenChange={(isOpen) => !isOpen && closeModal()}>
+            <DialogPrimitive.Portal>
+                <StyledOverlay />
+                <StyledContent>
                     {modalView === 'LOGIN_VIEW' && <SignUpView />}
-                </Dialog.Content>
-            </Dialog.Portal>
-        </Dialog.Root>
+                </StyledContent>
+            </DialogPrimitive.Portal>
+        </DialogPrimitive.Root>
     );
 }
 
@@ -131,20 +169,19 @@ const ModalView: FC<{ modalView: string; closeModal(): any }> = ({
 //----------------------------------------------------------------------------------------
 interface PageProps {
     pageProps: {
-        categories: Category[]
+        links: Category[]
     }
 }
 
 const Layout: FC<PageProps> = ({
     children,
-    pageProps: { categories = [], ...pageProps },
+    pageProps: { links = [], ...pageProps },
 }) => {
     const { locale = 'en-US' } = useRouter();
-
     return (
         <CommerceProvider locale={locale}>
             <div>
-                <nav>Navbar el here tod</nav>
+                <Navbar />
                 <main>{children}</main>
                 {/** modal opening component depends on ui state to show / hide modal  */}
                 <ModalUI />

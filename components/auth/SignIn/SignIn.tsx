@@ -3,7 +3,7 @@ import { useUI } from "../../ui-context/UIContext";
 
 
 interface Props { }
-
+/** Loaded dynamic in modal */
 const SigninView: FC<Props> = () => {
     const { setModalView, closeModal } = useUI()
     return (

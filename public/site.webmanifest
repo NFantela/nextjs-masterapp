@@ -1,0 +1,12 @@
+{
+  "name": "Nextjs masterapp demo",
+  "short_name": "Nextjs masterapp demo",
+  "description": "Nextjs masterapp demo -> https://www.nextjs.org/commerce",
+  "display": "standalone",
+  "start_url": "/",
+  "theme_color": "#fff",
+  "background_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+  ]
+}
