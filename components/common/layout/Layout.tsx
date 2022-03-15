@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { FC, MutableRefObject, ReactNode, useMemo, useRef } from 'react';
-import { Category } from '../../../types/category';
 import React, { createContext } from "react";
 import dynamic from 'next/dynamic';
 import { useUI } from '../../ui-context/UIContext';
@@ -169,19 +168,39 @@ const ModalView: FC<{ modalView: string; closeModal(): any }> = ({
 //----------------------------------------------------------------------------------------
 interface PageProps {
     pageProps: {
-        links: Category[]
     }
 }
 
+const categories = [
+    {
+        id: "as123-21321s212",
+        name: "Smartphones",
+        slug: "smartphones",
+        path: "smartphones"
+    },
+    {
+        id: "as123-21321s214",
+        name: "Smart Watches",
+        slug: "smart-watches",
+        path: "smart-watches"
+    }
+]
+
 const Layout: FC<PageProps> = ({
     children,
-    pageProps: { links = [], ...pageProps },
+    pageProps: { ...pageProps },
 }) => {
     const { locale = 'en-US' } = useRouter();
+
+    const navBarlinks = categories.map((c) => ({
+        label: c.name,
+        href: `/${c.slug}`,
+    }));
+
     return (
         <CommerceProvider locale={locale}>
             <div>
-                <Navbar />
+                <Navbar links={navBarlinks} />
                 <main>{children}</main>
                 {/** modal opening component depends on ui state to show / hide modal  */}
                 <ModalUI />

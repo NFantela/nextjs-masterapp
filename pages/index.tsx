@@ -1,3 +1,4 @@
+import { GetStaticPropsContext } from 'next';
 import Layout from '../components/common/layout/Layout';
 import { useUI } from '../components/ui-context/UIContext';
 import styles from '../styles/Home.module.scss'
@@ -11,9 +12,21 @@ const text = {
   backgroundColor: 'var(--surface1)',
 };
 
+export async function getStaticProps({
+  locale = '',
+}: GetStaticPropsContext) {
+  const config = { locale };
+
+  return {
+    props: {
+      config,
+    },
+    revalidate: 60,
+  }
+}
+
 const Home = () => {
   const { openModal } = useUI();
-  // todo make call for app links
   return (
     <div className={styles.container}>
       <section className={styles.main}>
